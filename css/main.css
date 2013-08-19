@@ -1,5 +1,22 @@
 @CHARSET "UTF-8";
 
+html,body {
+	height: 100%;
+	position: relative;
+}
+
+#container-wrap{
+	min-height:100%;
+	_height:100%;
+	position:relative;
+}
+#container-wrap:after{
+	display:block;
+	height:1px;
+	content:"";
+	padding-bottom:139px;	
+}
+
 body {
 	background-image: url(../img/bg_header.png);
 }
@@ -821,6 +838,9 @@ h2 {
 .wrap_footer {
 	background: #161616;
 	color: #999999;
+	height:140px;
+	margin-top:-140px;
+	postion:relative;
 }
 
 footer {
@@ -1016,7 +1036,7 @@ footer {
 
 .modal-backdrop,.modal-backdrop.fade.in {
 	opacity: 0.8;
-	filter: alpha(opacity =  80);
+	filter: alpha(opacity =   80);
 }
 
 .modal-backdrop.fade {
@@ -1025,5 +1045,5 @@ footer {
 
 .modal-backdrop,.modal-backdrop.fade.in {
 	opacity: 0.8;
-	filter: alpha(opacity =   80);
+	filter: alpha(opacity =    80);
 }

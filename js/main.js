@@ -4,11 +4,9 @@
 
 	var AffNew = function(element, options) {
 		this.options = $.extend({}, $.fn.affixnew.defaults, options)
-		this.$window = $(window).on('scroll.affixnew.data-api',
-				$.proxy(this.checkPosition, this)).on(
-				'click.affixnew.data-api', $.proxy(function() {
-					setTimeout($.proxy(this.checkPosition, this), 1)
-				}, this))
+		this.$window = $(window).on('scroll.affixnew.data-api', $.proxy(this.checkPosition, this)).on('click.affixnew.data-api', $.proxy(function() {
+			setTimeout($.proxy(this.checkPosition, this), 1)
+		}, this))
 		this.$element = $(element)
 		this.checkPosition()
 	}
@@ -31,21 +29,18 @@
 	var old = $.fn.affixnew
 
 	$.fn.affixnew = function(option) {
-		return this
-				.each(function() {
-					var $this = $(this), data = $this.data('affixnew'), options = typeof option == 'object'
-							&& option
-					if (!data)
-						$this.data('affixnew',
-								(data = new AffNew(this, options)))
-					if (typeof option == 'string')
-						data[option]()
-				})
+		return this.each(function() {
+			var $this = $(this), data = $this.data('affixnew'), options = typeof option == 'object' && option
+			if (!data)
+				$this.data('affixnew', (data = new AffNew(this, options)))
+			if (typeof option == 'string')
+				data[option]()
+		})
 	}
 	$.fn.affixnew.Constructor = AffNew
 	$.fn.affixnew.defaults = {
-		offset : 0,
-		delay : 300
+	    offset : 0,
+	    delay : 300
 	}
 
 	$.fn.affixnew.noConflict = function() {
@@ -69,15 +64,15 @@
 	"use strict"; // jshint ;_;
 	var myLatlng = new google.maps.LatLng(59.852586, 30.284883);
 	var myOptions = {
-		zoom : 15,
-		center : myLatlng,
-		mapTypeId : google.maps.MapTypeId.ROADMAP
+	    zoom : 15,
+	    center : myLatlng,
+	    mapTypeId : google.maps.MapTypeId.ROADMAP
 	}
 	var map = new google.maps.Map(document.getElementById("g_maps"), myOptions);
 	var marker = new google.maps.Marker({
-		position : myLatlng,
-		map : map,
-		title : "ООО «КАДгроуп»"
+	    position : myLatlng,
+	    map : map,
+	    title : "ООО «КАДгроуп»"
 	});
 }(window.jQuery);
 
@@ -92,9 +87,9 @@
 	}
 
 	SliderBg.prototype.startSlide = function() {
-		var last_slide = this.$element.children(":last") 
+		var last_slide = this.$element.children(":last")
 		this.$element.css('top', -last_slide.height())
-		last_slide.clone().prependTo(this.$element)		
+		last_slide.clone().prependTo(this.$element)
 		last_slide.remove()
 		this.$element.animate({
 			top : 0
@@ -104,22 +99,19 @@
 	var old_sl = $.fn.sliding
 
 	$.fn.sliding = function(option) {
-		return this
-				.each(function() {
-					var $this = $(this), data = $this.data('slide'), options = typeof option == 'object'
-							&& option
-					if (!data)
-						$this.data('sliding', (data = new SliderBg(this,
-								options)))
-					if (typeof option == 'string')
-						data[option]()
-				})
+		return this.each(function() {
+			var $this = $(this), data = $this.data('slide'), options = typeof option == 'object' && option
+			if (!data)
+				$this.data('sliding', (data = new SliderBg(this, options)))
+			if (typeof option == 'string')
+				data[option]()
+		})
 	}
 
 	$.fn.sliding.Constructor = SliderBg
 	$.fn.sliding.defaults = {
-		wait : 5000,
-		delay : 1000
+	    wait : 5000,
+	    delay : 1000
 	}
 
 	$.fn.sliding.noConflict = function() {
@@ -140,5 +132,34 @@
 	$('.top').on("click", function() {
 		$(document).scrollTo(0, 500);
 	})
-}(window.jQuery);
 
+	function goAnchor(anch, e) {
+		e.preventDefault()
+
+		var dest = $(anch).offset().top - 37
+
+		if ($('nav').offset().top != dest)
+			$("html,body").animate({
+				scrollTop : dest > 0 ? dest : 0
+			}, "slow")
+
+		try {
+			history.replaceState(null, null, anch);
+		} catch (e) {
+			location.hash = anch;
+		}
+	}
+
+	$("nav>ul>li>a").on("click", function(e) {
+		goAnchor($(this).attr("href"), e)
+	})
+
+	$("nav ul ul>li>a").on("click", function(e) {
+		$("#tabContent").removeClass($("#tabs li.active>a").data('background'))
+		$("#tabs li, tabContent>div").removeClass("active")
+		$($(this).attr("href") + ">a").trigger("click.tab.data-api")
+
+		goAnchor("#services", e)
+	})
+
+}(window.jQuery);
